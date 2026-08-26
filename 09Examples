@@ -148,7 +148,7 @@ cd smaller_job
 vi test.sh
 cat test.sh
 > #!/bin/bash
-> #SBATCH --gres=gpu:nvidia_l40s:1
+> #SBATCH --gres=gpu:nvidia_l40s:2
 >
 > echo $CUDA_VISIBLE_DEVICES
 > smaller-analyse    # kowalski, analysis

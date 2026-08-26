@@ -20,7 +20,7 @@ Slurm commands:
   ```
   srun hostname    # prints out name of machine which will be a GPU machine 
   srun --nodelist=gpu3 hostname    # only gpu3 can pick up the task
-  srun --gpus=1 hostname    # allocates 2 GPUs to your job
+  srun --gpus=2 hostname    # allocates 2 GPUs to your job
   ```
 
 * `sbatch <path-to-script>` - submit a job script, which will run in the background so you can exit your terminal and check back on it later. By default this will stream output to slurm-<job-id>.out
