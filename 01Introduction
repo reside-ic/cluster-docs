@@ -1,17 +1,17 @@
-Slurm GPU Docs: Introduction
+1. Slurm GPU Docs: Introduction
 ---
 
 The documentation will just be pure text files that is fed into `less` viewer (`man less` for more details). The documentation will be written similar to markdown files. Backticks (`) denote commands you can type, "(!)" symbol is important information and ">" indicates what the command will print. The list of pages:
 
-* Introduction
-* Architecture
-* LinuxMachines
-* Tickets
-* Slurm
-* GPUTypes
-* Limits
-* Etiquette
-* Examples
-* Cheatsheet
+1. Introduction
+2. Architecture
+3. LinuxMachines
+4. Tickets
+5. Slurm
+6. GPUTypes
+7. Limits
+8. Etiquette
+9. Examples
+10. Cheatsheet
 
 Any suggestions to make the docs better are appreciated! Don't be afraid to reach out, it will only help other people in the future.

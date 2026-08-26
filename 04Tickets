@@ -1,4 +1,4 @@
-Tickets
+4. Tickets
 ---
 
 Tickets are temporary passwords ICT give us after a user has SSHed in with their DIDE credentials. They are needed because we don't want to store your actual DIDE passwords anywhere on the cluster - that is unsafe - so instead we get a ticket that can act as your password but for a maximum of 10 days.

@@ -1,4 +1,4 @@
-Slurm
+5. Slurm
 ---
 
 Slurm is the program that manages queues of jobs and scheduling your jobs on to different machines. The scheduling also takes into account any resources you have asked for. This page will only give a very brief summary of some Slurm commands. I would urge you to read the official Slurm docs (there are Slurm docs on all the slurm commands), especially these 3 pages:
