@@ -1,0 +1,54 @@
+Slurm
+---
+
+Slurm is the program that manages queues of jobs and scheduling your jobs on to different machines. The scheduling also takes into account any resources you have asked for. This page will only give a very brief summary of some Slurm commands. I would urge you to read the official Slurm docs (there are Slurm docs on all the slurm commands), especially these 3 pages:
+
+* https://slurm.schedmd.com/quickstart.html
+* https://slurm.schedmd.com/srun.html
+* https://slurm.schedmd.com/sbatch.html
+
+Slurm commands:
+
+* `sinfo` - see status of GPU nodes
+
+* `sinfo -o "%10N  %4c  %10m  %35G"` - see CPUs, memory and GPUs for each node
+
+* `squeue` - see queue of jobs including running ones
+
+* `srun command arg1 arg2 ...` - run command in foreground, which means you'll get the output in your terminal (as if you had executed the command in the HDN even though it will be running on a GPU node). This also means if you exit or close your terminal, your job will also exit.
+  Examples:
+  ```
+  srun hostname    # prints out name of machine which will be a GPU machine 
+  srun --nodelist=gpu3 hostname    # only gpu3 can pick up the task
+  srun --gpus=1 hostname    # allocates 2 GPUs to your job
+  ```
+
+* `sbatch <path-to-script>` - submit a job script, which will run in the background so you can exit your terminal and check back on it later. By default this will stream output to slurm-<job-id>.out
+  Example script (called "test.sh"):
+  ```
+  #! /bin/bash
+  #SBATCH --nodelist=gpu6
+  #SBATCH --gres=gpu:2
+
+  echo $CUDA_VISIBLE_DEVICES
+  sleep 10    # run whatever command here
+  ```
+  This script will print cuda visible devices (which GPUs you have been allocated) and wait for 10 seconds. Notice the "#SBATCH" lines at the top of the script. This is a way of defining flags you would give to `sbatch` in the script. This script will be submitted to gpu6 node and requests 2 gpus of any type. To specify the type of GPU. use format `--gres=gpu:<gpu-name>:<amount>` (more info on this in "GPUTypes" documentation).
+
+  Example usage (assuming gpu6 has 4 GPU cards all free):
+  ```
+  sbatch test.sh    # submit background job, job-id = 1
+  sbatch test.sh    # immediately submit another, job-id = 2
+  ```
+  
+  Example outputs
+  ```
+  cat slurm-1.out
+  > 0,1
+  cat slurm-2.out
+  > 2,3
+  ```
+
+* `scontrol show jobs <job-id>` - view information about a submitted job
+
+* `scancel <job-id>` - cancel a job

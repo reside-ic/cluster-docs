@@ -1,0 +1,16 @@
+Etiquette
+---
+
+These are rules that cannot be enforced at a programmatic level. They are still rules so your job may be cancelled without notice if your job does not comply with these rules. If such a job is preventing you from using the cluster, reach out to the person and try and sort it out between yourselves, if possible. If this does not work, let us know and we will take the appropriate action.
+
+(!) It goes without saying but always be respectful when talking to another user
+
+Rules:
+
+* Resource utilisation, especially GPU utilisation - there is an expectation that you know what your code is doing and have tried smaller jobs while monitoring GPU utilisation before launching a big job on the cluster. If a job has requested resources that it is not using most of the time and if this is preventing users from launching jobs, it may be cancelled
+
+* CPU jobs - some CPU only jobs are acceptable, e.g. installing/building dependencies, benchmarking against GPU runs, monitoring GPU/memory usage or other small jobs. Any large CPU jobs that do actual analysis for a long period of time/request a large number of CPUs are not allowed
+
+* Saturating the cluster - most of the time, you should not saturate the cluster and submit many jobs to all the nodes at once as this will prevent someone else from getting a node for a long amount of time. Instead, you should target a subset of the nodes. If the cluster is relatively empty, you can send a mesasge on the "GPU Slurm" teams channel that you are using all the nodes and anyone can contact you to cancel any of your jobs. Your job may still be cancelled if you do not respond to people asking you to cancel your job
+
+* Fragmenting the cluster - this is probably quite rare and may happen accidentally but your jobs may end up in a state where many 1 GPU jobs are running across multiple nodes, preventing users who want to use all of the nodes on one of the machines. In this case, we may ask if it is okay to cancel some of your jobs and reschedule them on to a different node

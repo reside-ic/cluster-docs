@@ -1,0 +1,39 @@
+Tickets
+---
+
+Tickets are temporary passwords ICT give us after a user has SSHed in with their DIDE credentials. They are needed because we don't want to store your actual DIDE passwords anywhere on the cluster - that is unsafe - so instead we get a ticket that can act as your password but for a maximum of 10 days.
+
+A ticket is given to you automatically after you SSH into the HDN (Head node, see "Architecture" docs for more information about full form of machines). After you SSH in there are a couple of commands to view/modify your tickets:
+
+* `klist` - view your ticket, let's go through an example output:
+  ```
+  Ticket cache: KCM:794211268:22839
+  Default principal: mkusumga@DIDE.LOCAL
+
+  Valid starting     Expires            Service principal
+  25/08/26 14:58:47  26/08/26 00:58:47  krbtgt/DIDE.LOCAL@DIDE.LOCAL
+	  renew until 01/09/26 14:58:47
+  ```
+  the "Expires" datetime is when your ticket expires and you lose access to your file system however, we can keep refreshing tickets after you submit your job until the "renew until" datetime. This is, of course, a problem for longer running jobs, more on fixing that later.
+
+* `kinit` - grab a new ticket with a "renew until" datetime 10 days from now. You will have to enter your DIDE password here. Can use `klist` to confirm the new ticket.
+
+
+To solve longer running jobs with time limits, we need to learn a bit more about how tickets get propagated in the cluster:
+
+1. Ticket is captured (copied) into a directory (called AUKS credential cache) at the moment a user submits a job inside the HDN
+2. Tickets are automatically renewed until the "renew until" datetime while the job is in the queue AND during the job but these are just in the HDN at the moment
+3. GPU machines need the ticket to access your file system so they regularly ask the HDN for the ticket in that folder
+4. Your job finishes and your ticket is deleted from the cache
+
+The final commands we need is `auks -g` and `auks -a`. This lets you interact with the cache that the GPU machines regularly pull tickets from. Now let's run through an example of a long running job (takes 5 days say) that is also waiting in a long queue:
+
+1. User submits jobs with a fresh ticket (`kinit` before submitting the job) so their ticket can be renewed for 10 days.
+2. Many days (<10) pass.
+3. They SSH onto HDN and check the queue (more info for checking queue in "Slurm" docs) and their job is still in the queue.
+4. They want to check how much time is left for their ticket. They can use `auks -g` to get the ticket from the cache.
+5. `klist` shows them the maximum lifetime of the ticket. They need their ticket to be active when their job is picked up and for the remainder of the job, but their ticket will expire in 3 days.
+6. `kinit` gives them a new ticket with a longer lifetime.
+7. `auks -a` lets them push this fresh ticket into the cache.
+5. Their jobs gets picked up after 4 more days so their ticket is valid for 6 days from the job start.
+6. That is enough time and their job finishes successfully. User is happy they refreshed their ticket!

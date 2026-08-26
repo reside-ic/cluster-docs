@@ -1,0 +1,82 @@
+Architecture
+---
+
+Some knowledge of the architecture is required to use the cluster effectively (not all of this is relevant but here for completeness). There are 5 main types of machines at play:
+
+* Your computer (YOU) - your starting point
+* ICT Active Directory (ICT) - database holding your DIDE credentials
+* Head node (HDN) - machine you will SSH into but will generally not do computation on apart from bootstrapping
+* GPU node (GPU) - machines that will pick up your jobs and run them on your behalf with resources that you have requested
+* NFS share (NFS) - machine that holds every user's data
+
+Here is an example of how these machines work together when a user submits their job.
+
+
+1. SSHing into the HDN (a ticket is a short lived password and your access into your folder, see "Tickets" documentation for more details)
+_______
+| YOU |
+-------
+   | SSH
+   v
+_______  DIDE credentials  _______
+| HDN | -----------------> | ICT |
+-------                    -------
+_______       ticket       _______
+| HDN | <----------------- | ICT |
+-------                    -------
+After this, you are in the HDN
+
+
+2. Creating a script (diagram shows making a file but same thing)
+
+_______     make file     _______
+| HDN | ----------------> | NFS | 
+-------                   -------
+_______       okay        _______
+| HDN | <---------------- | NFS | 
+-------                   -------
+Yes, every single time you create/edit a file or directory, it is a network connection to another computer, where your files are stored
+
+(!) We have other mounts on the cluster too, including qdrive, climate storage and CPU cluster storage. You can view them with `df -k`
+
+
+3. Submitting a job and running
+________________________________________
+| HDN (contains queue and all tickets) |
+----------------------------------------
+  | srun / sbatch - your job is put into the
+  |   queue and your ticket will automatically
+  |   renew until the max time limit on it
+  v
+______________________________________________
+| HDN (job now in queue, your ticket stored) |
+----------------------------------------------
+  | a GPU machine is free to pick up job but it
+  | needs your ticket to act as you and get
+  | access to your files including your script
+  | that you want to run
+  v
+_______   ticket for user   _______
+| GPU | <-----------------> | HDN | 
+-------                     -------
+_______       ticket       _______
+| GPU | -----------------> | ICT | 
+-------                    -------
+(!) if your ticket is not valid, e.g if your job has been in the queue for over 10 days (max life of ticket), then your job will fail as the GPU machine can't get access to your directory. Your job can also fail if it is in the queue for 5 days and it takes over 5 days to finish as it will lose access to your files. More info in "Tickets" documentation.
+_______        okay        _______
+| GPU | <----------------- | ICT | 
+-------                    -------
+_______    get job script   _______
+| GPU | ------------------> | NFS | 
+-------                     -------
+_______     here you go     _______
+| GPU | <------------------ | NFS | 
+-------                     -------
+  | job script will execute, if sbatch is used,
+  | logs will go to slurm out file and once
+  | job completes
+  v
+_______      log files      _______
+| GPU | <-----------------> | NFS | 
+-------                     -------
+job finishes
