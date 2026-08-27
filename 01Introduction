@@ -1,7 +1,30 @@
-1. Slurm GPU Docs: Introduction
+1. [NAME] Docs: Introduction
 ---
 
-The documentation will just be pure text files that is fed into `less` viewer (`man less` for more details). The documentation will be written similar to markdown files. Backticks (`) denote commands you can type, "(!)" symbol is important information and ">" indicates what the command will print. The list of pages:
+This is the documentation for [NAME], the GPU compute cluster for the infectious disease department. The docs will just be pure text files that are fed into `less` viewer (`man less` for more details). The style is similar to markdown files with the following notation:
+
+* ` - backticks denote commands you can type, 3 backticks denote a code block
+  Examples:
+  This is the `ls` command in a sentence, while the following is a code block:
+  ```
+  ls
+  cd dir
+  ```
+
+* > - indicates what the command will print
+  Examples:
+  ```
+  echo hello
+  > hello
+  ```
+
+* (!) - this symbol is important information
+  Examples:
+  (!) Please don't ignore me
+
+* * - asterisk symbol emphasises a word
+  Examples:
+  Green is *not* a creative colour
 
 1. Introduction
 2. Architecture
@@ -14,4 +37,4 @@ The documentation will just be pure text files that is fed into `less` viewer (`
 9. Examples
 10. Cheatsheet
 
-Any suggestions to make the docs better are appreciated! Don't be afraid to reach out, it will only help other people in the future.
+Any suggestions to make the docs better are appreciated! Don't be afraid to open an issue on the cluster docs repository, "https://github.com/reside-ic/cluster-docs". It will only help other people in the future!
