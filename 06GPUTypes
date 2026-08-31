@@ -3,4 +3,21 @@
 
 This section is optional. It will not be tested but it may be a good guide to deciding what type of GPUs you may want to use.
 
-... list types and what nodes they are on
+The DIDE cluster has several GPU types which may be better suited to different workloads, in the table below we summarise the key performance numbers for most machine learning workloads. It is important to realise that these numbers correspond to **peak** achievable performance, in practice many applications will achieve performance substantially below this. Also note that certain accelerated kernels may only be available on newer NVIDIA generations (e.g. Flash Attention 4) and that TF32 cores are default for FP32 workloads.
+
+| GPU | Generation | Nodes | TF32 Tensor Core (TFLOP/s) | BF16 Tensor Core (TFLOP/s) | FP8/FP4 Tensor Core (TFLOP/s) | VRAM (GB) | Memory Bandwidth (GB/s) | Intra-node bandwidth |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| NVIDIA A100 (PCIe) | Ampere | GPU1 (2 per node) | 156 | 312 | Not supported/Not supported | 40 | 1 555 | -- |
+| NVIDIA RTX A5000 | Ampere | GPU2 (8 per node) | 55.55 | 111.1 | Not supported/Not supported | 24 | 768 | -- |
+| NVIDIA L40S | Ada | GPU3-GPU7 (4 per node) | 183 | 362 | 733/Not supported | 48 | 864 | -- |
+| NVIDIA RTX Pro 5000 | Blackwell | GPU8 (8 per node) | 130 (estimated) | 260 (estimated)| 516/1032 | 48 | 1 344 | -- |
+
+Some key comparisons: 
+* RTX Pro 5000 vs L40S: RTX Pro 5000s have lower TF32 tensor core performance than the L40S however with almost double the memory bandwidth speed they will likely be much faster for memory-bound workloads (e.g. autoregressive rollout of LLMs). Whereas the L40S would do better on compute-bound workloads (e.g. LLM prefill, multiplying large matrices with minimal data movement).
+* A100 vs L40S: A100s have similar TF32 and BF16 performance to the L40S with substantially higher memory bandwidth making them a more attractive choice on a **per-card basis**. However, since there are 4 L40S per-node, workloads which employ multi-GPU training with large models/batches will likely do better on the L40S.
+* RTX Pro 5000 vs A100: Similar memory bandwidth, and slightly better TF32/BF16 on the A100s. However, the RTX Pro 5000s support FP8 and FP4 natively, making them a much better choice for low-precision LLM inference with VLLM and SGLang.
+
+
+**Recommendations:**
+Before measuring whether the GPU acceleration is memory or compute bound, try to do determine if there are significant bottlenecks in your code. For example, inefficiences in a dataloader might totally dominate a job's overall performance, making GPU optimisations unhelpful. Once non-GPU bottlenecks have been eliminated or mitigated, try to select your job based on whether its compute or memory bound, determine if it can benefit from lower precision (e.g. BF16 ) and whether you can increase your batching within a single GPU or over multiple GPUs. A good proxy for your GPU utilisation is to look at the power draw with `nvidia-smi`. For example, the L40S cards **idle** at around 80W, so if your job is running at 90W you are barely utilising the GPUs at all.
+ 
