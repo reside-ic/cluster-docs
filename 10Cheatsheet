@@ -1,0 +1,22 @@
+10. Cheatsheet
+---
+
+* `klist` - see your ticket
+* `kinit` - get new ticket
+* `auks -g` - get ticket in cache
+* `auks -a` - push current ticket into cache
+* `sinfo` - see status of nodes
+* `sinfo -o "%10N  %4c  %10m  %35G"` - see CPUs, memory and GPUs for each node
+* `squeue` - see queue of jobs including running ones
+* `srun command arg1 arg2 ...` - run command in the foreground
+* `sbatch <script>` - run a script in the background
+* `--nodelist=gpuN` - to request job runs on a particular machine
+* `--gres=gpu:<gpu-name>:<amount>` - to request a particular type of gpu, specify it in your gres flag. Current available gpu types are nvidia_rtx_a5000, nvidia_a100-pcie-40gb, nvidia_l40s and nvidia_rtx_pro_5000_blackwell (this is also the default ordering if gpu type is unspecified)
+* `scontrol show jobs <job-id>` - see info about submitted job
+* `scancel <job-id>` - cancel job
+* `du -hs ~/` - to see how much space you have taken up
+* `sacct -o "JobID,JobName,AllocTRES%80,State,ExitCode"` - to see recently run jobs
+* `df -k` - list mounts and mount points
+* `ps -ef` - view all processes running on machine
+* `ps -ef | grep <pid>` - find process id info, user is first column
+* `getent passwd <username>` - get full name of username

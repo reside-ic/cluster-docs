@@ -67,6 +67,6 @@ Understanding of these machine concepts are required to use the cluster:
 
 * Monitoring GPU usage via `nvidia-smi` - knowledge of `nvidia-smi` command is required as this is a GPU cluster, here is a cheatsheet: "https://gist.github.com/omerfsen/8ecb620675525ac724a92bdf5a31a4b3". It is good etiquette to make sure you are using the resources you have requested rather than wasting them. Before you run a GPU job, please try a smaller job and run `nvidia-smi` on the node that has picked the job up. So, if gpu2 picks up your job, you can run `srun --nodelist=gpu2 nvidia-smi` and make sure you have a high enough power draw, memory usage and GPU utilisation.
 
-(!) it can be hard to know which GPUs your task has been allocated. In your sbatch script you can add "echo $CUDA_VISIBLE_DEVICES" which prints out which GPUs have been allocated to your job. Do not modify this env var.
+(!) it can be hard to know which GPUs on the machine your task has been allocated. In your sbatch script you can add "echo $CUDA_VISIBLE_DEVICES" which prints out the indices of GPUs that have been allocated to your job. Do *not* modify this env var.
 
 There are plenty more resources online to help you understand all of these concepts better.

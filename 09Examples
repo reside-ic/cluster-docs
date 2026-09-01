@@ -27,7 +27,8 @@ du -hs ~/
 
 # Make folder and script
 # In practice you would probably use `git` to pull
-# changes or copy files over with `scp`
+# changes or copy files over with `scp`, `vi` is
+# just a text editor
 mkdir project_final_final_v2
 cd project_final_final_v2
 vi script.sh
@@ -194,7 +195,7 @@ srun --nodelist=gpu5 nvidia-smi
 # Can make a note of the process id and run
 # command below to get user that owns this
 # process (first column)
-srun --nodelist=gpu5 ps aux | grep <pid>
+srun --nodelist=gpu5 ps -ef | grep <pid>
 
 # The first column is their DIDE username but
 # to find their full name so you can contact
