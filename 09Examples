@@ -1,0 +1,204 @@
+9. Examples
+---
+
+Time to put everything together. Here is a full user journey of a user called "foo", who wants to run a long running job on a busy cluster:
+
+```
+# SSH into HDN
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+
+
+# Check disk usage, don't want to get too close
+# to 2TB
+du -hs ~/
+> 1.8T	/mnt/gpu-storage/homes/foo/
+
+
+# Time to clean up
+rm -r old_checkpoints_safe_to_delete
+
+
+# Check disk usage again
+du -hs ~/
+> 200M	/mnt/gpu-storage/homes/foo/
+
+# Good to go!
+
+
+# Make folder and script
+# In practice you would probably use `git` to pull
+# changes or copy files over with `scp`, `vi` is
+# just a text editor
+mkdir project_final_final_v2
+cd project_final_final_v2
+vi script.sh
+chmod +x script.sh
+
+
+# Show script
+cat script.sh
+> #!/bin/bash
+> #SBATCH --gres=gpu:nvidia_l40s:2
+>
+> echo $CUDA_VISIBLE_DEVICES
+> analyse    # Kowalski, Analysis
+
+
+# Which nodes have nvidia_l40s?
+sinfo -o "%10N  %4c  %10m  %35G"
+
+
+# Which ones are free?
+sinfo
+squeue
+
+# Sadly all are busy. I have to run this script
+# 4 times, needing a total of 8 GPUs. I should
+# probably send them to one node if the cluster
+# is very busy, okay will send them to gpu4
+
+
+# Ready to submit the job but need to check my
+# ticket
+klist
+
+
+# Refresh ticket
+kinit
+
+
+# Submit the jobs
+sbatch --nodelist=gpu4 ./script.sh
+> Submitted batch job 1680
+sbatch --nodelist=gpu4 ./script.sh
+> Submitted batch job 1681
+sbatch --nodelist=gpu4 ./script.sh
+> Submitted batch job 1682
+sbatch --nodelist=gpu4 ./script.sh
+> Submitted batch job 1683
+sbatch --nodelist=gpu4 ./script.sh
+> Submitted batch job 1684
+
+
+# That last one was a mistake!
+scancel 1684
+
+
+# Set a reminder on phone for a week from now
+# to check back on the job and enjoy other
+# healthier hobbies in life
+exit
+
+
+# Time passes... one week later
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+
+
+# Where is my job in the queue?
+squeue
+
+# Still in the queue
+
+
+# Do I need to refresh my ticket?
+auks -g
+klist
+
+
+# Probably should refresh my ticket
+kinit
+klist
+auks -a
+
+
+# Touch some grass, enjoy hobbies...
+exit
+
+
+# Time passes... one week later
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+squeue
+
+# Two jobs have been picked up with two jobs
+# still in queue, I may need to refresh my
+# ticket again if needed
+
+
+# Might have too many hobbies...
+exit
+
+
+# Time passes... couple days later
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+squeue
+
+# Jobs have finished
+
+
+# View output
+cat slurm-1680.out
+```
+
+
+Here is a summarised journey for a user who is unsure about their GPU utilisation and wants to monitor GPU usage on a smaller job
+```
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+
+mkdir smaller_job
+cd smaller_job
+vi test.sh
+cat test.sh
+> #!/bin/bash
+> #SBATCH --gres=gpu:nvidia_l40s:2
+>
+> echo $CUDA_VISIBLE_DEVICES
+> smaller-analyse    # kowalski, analysis
+
+kinit
+sbatch --nodelist=gpu6 test.sh
+> Submitted batch job 8142
+
+# Just after job has been picked up
+cat slurm-8142.out
+> 2,3
+
+# Job was allocated GPUs 2 and 3 on gpu6
+
+# Run the following command a couple of times
+# noting the GPU power draw, memory allocated
+# and utilisation
+srun --nodelist=gpu6 nvidia-smi
+
+# If they are not high, investigate why your
+# code isn't using resources efficiently
+```
+
+
+Here is a summarised journey for a user, foo, who is blocked by some users, bar and baz, and wants to know their jobs' time limits and GPU utilisations on gpu5. This has slightly more advanced commands that you do not need to know but useful if you want to check someone else's utilisation
+```
+ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
+squeue
+
+
+# Can see time limit
+scontrol show jobs 123
+
+
+# nvidia-smi to find processes running on GPUs
+# and GPU utilisation
+srun --nodelist=gpu5 nvidia-smi
+
+# One of the processes consistently has pretty
+# low GPU utilisation
+
+
+# Can make a note of the process id and run
+# command below to get user that owns this
+# process (first column)
+srun --nodelist=gpu5 ps -ef | grep <pid>
+
+# The first column is their DIDE username but
+# to find their full name so you can contact
+# them on teams you can run
+getent passwd <username>
+```
