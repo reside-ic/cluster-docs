@@ -69,15 +69,15 @@ kinit
 
 # Submit the jobs
 sbatch --nodelist=gpu4 ./script.sh
-> Submitted batch job 1680
+> sbatch: Submitted batch job 1680
 sbatch --nodelist=gpu4 ./script.sh
-> Submitted batch job 1681
+> sbatch: Submitted batch job 1681
 sbatch --nodelist=gpu4 ./script.sh
-> Submitted batch job 1682
+> sbatch: Submitted batch job 1682
 sbatch --nodelist=gpu4 ./script.sh
-> Submitted batch job 1683
+> sbatch: Submitted batch job 1683
 sbatch --nodelist=gpu4 ./script.sh
-> Submitted batch job 1684
+> sbatch: Submitted batch job 1684
 
 
 # That last one was a mistake!
@@ -156,7 +156,7 @@ cat test.sh
 
 kinit
 sbatch --nodelist=gpu6 test.sh
-> Submitted batch job 8142
+> sbatch: Submitted batch job 8142
 
 # Just after job has been picked up
 cat slurm-8142.out
