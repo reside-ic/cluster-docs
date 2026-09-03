@@ -1,7 +1,7 @@
 4. Tickets
 ---
 
-Tickets are temporary passwords ICT give us after a user has SSHed in with their DIDE credentials. They are needed because we don't want to store your actual DIDE passwords anywhere on the cluster - that is unsafe - so instead we get a ticket that can act as your password but for a maximum of 10 days.
+Tickets are temporary passwords ICT give us after a user has SSHed in with their DIDE credentials. They are needed because we don't want to store your actual DIDE passwords anywhere on the cluster - that is unsafe - so instead we get a ticket that can act as your password but for a maximum of 7 days.
 
 A ticket is given to you automatically after you SSH into the head node (see "Architecture" docs for more information about the head node and other machines). After you SSH in there are a couple of commands to view/modify your tickets:
 
@@ -14,33 +14,35 @@ A ticket is given to you automatically after you SSH into the head node (see "Ar
   25/08/26 14:58:47  26/08/26 00:58:47  krbtgt/DIDE.LOCAL@DIDE.LOCAL
 	  renew until 01/09/26 14:58:47
   ```
-  the "Expires" datetime is when your ticket expires and you lose access to your file system however, we can keep refreshing tickets after you submit your job until the "renew until" datetime. The "renew until" datetime is 10 days after the ticket is issued. The problem arises when the time a job has been queued *added* to the time job spends running exceeds 10 days. In that case, your ticket will expire mid way through your job and it will lose access to your file system.
+  The "Expires" datetime is when your ticket expires and you lose access to your file system. However, we can keep refreshing tickets after you submit your job until the "renew until" datetime, which is 7 days after the ticket is issued. The problem arises when the time a job has been queued *added* to the time the job spends running exceeds 7 days. In that case, your ticket will expire part way through your job and it will lose access to your file system.
 
-* `kinit` - grab a new ticket with a "renew until" datetime 10 days from now. You will have to enter your DIDE password here. Can use `klist` to confirm the new ticket.
+* `kinit` - grab a new ticket with a "renew until" datetime 7 days from now. You will have to enter your DIDE password here. Can use `klist` to confirm the new ticket.
+
+(!) The default "renew until" datetime may change from 7 days to another default depending on our configuration, ICT's configuration or options you can provide to the `kinit` command. Always check the "renew until" datetime on the ticket itself - that should be your source of truth. For these docs, we assume 7 days.
 
 
-To solve longer running jobs with time limits, we need to learn a bit more about how tickets get propagated in the cluster:
+Before we can think about how to manage longer running jobs with time limits, we first need to learn a bit more about how tickets get propagated in the cluster in the usual case:
 
 1. Ticket is captured (copied) into a directory (called AUKS credential cache) at the moment a user submits a job inside the head node
-2. While the job is in the queue or running, the head node will renew your ticket in the directory in the background. Your ticket will automatically renew until the "renew until" time limit, at which point it will stop renewing and expire
+2. While the job is in the queue or running, the head node will renew your ticket in the directory in the background until the "renew until" time limit, at which point it will stop renewing and expire
 3. GPU machines need the ticket from the head node to access your file system so they regularly ask the head node for it, inheriting the refreshed tickets from the cache
 4. Your job finishes and your ticket is deleted from the cache
 
-The problem with longer jobs is step 2 above. If a job is in the queue for 10 days then by the time a job is picked up by a GPU machine, your ticket is expired and the GPU machine cannot access your file system (which in most cases will cause the job to fail).
+The problem with longer jobs is step 2 above. If a job is in the queue for 7 days then by the time it is picked up by a GPU machine, your ticket is expired and the GPU machine cannot access your file system (which in most cases will cause the job to fail).
 
 The final commands we need are `auks -g` and `auks -a`. These let you interact with the cache that the GPU machines regularly pull tickets from. Let's run through an example of a long running job (takes 5 days say) that is also waiting in a long queue to see how the final commands work:
 
-1. User submits jobs with a fresh ticket (`kinit` before submitting the job) so their ticket can be renewed for 10 days.
-2. Many days (<10) pass.
+1. User submits a job with a fresh ticket (`kinit` before submitting the job) so their ticket can be renewed for 7 days.
+2. Many days (<7) pass.
 3. They SSH onto head node and check the queue (more info for checking queue in "Slurm" docs) and their job is still in the queue.
 4. They want to check how much time is left for their ticket (and at the same time how long their job has been in the queue). They can use `auks -g` to get the ticket from the cache.
 5. `klist` shows them the maximum lifetime of the ticket. They need their ticket to be active when their job is picked up and for the remainder of the job, but they see their ticket will expire in 3 days.
 6. `kinit` gives them a new ticket with a longer lifetime.
 7. `auks -a` lets them push this fresh ticket into the cache.
-8. Their jobs gets picked up after 4 more days so their ticket is valid for 6 days from the job start.
+8. Their job gets picked up after 2 more days so their ticket is valid for 5 days from the job start.
 9. That is enough time and their job finishes successfully. User is happy they refreshed their ticket!
 
-If, in step 2, more than 10 days pass there are 3 main possibilities:
+If, in step 2, more than 7 days pass there are 3 main possibilities:
 
 * Your job has failed
 

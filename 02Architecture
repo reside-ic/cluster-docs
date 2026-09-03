@@ -7,7 +7,7 @@ Some knowledge of the architecture is required to use the cluster effectively (n
 * ICT Active Directory (ICT) - database holding your DIDE credentials and any tickets (temporary passwords) issued. The cluster uses their database as an authentication service to make sure only machines with your tickets can run jobs as you
 * Head node (HDN) - machine that manages the cluster and the one you SSH into. You will generally not do computation on it apart from bootstrapping. This is reachable via "wpia-lxhn.hpc.dide.ic.ac.uk"
 * GPU node (GPU) - machines that will pick up your jobs and run them on your behalf with resources that you have requested. These have domain names of the form "wpia-gpu-0[number].dide.ic.ac.uk"
-* NFS share (NFS) - machine that holds every user's files. This has domain name "wpia-nfs1.hpc.dide.ic.ac.uk"
+* Network File System (NFS) - machine that holds every user's files. This has domain name "wpia-nfs1.hpc.dide.ic.ac.uk"
 
 Here is an example of how these machines work together when a user submits their job. These diagrams are a timeline with the time flowing downwards.
 

@@ -140,7 +140,7 @@ cat slurm-1680.out
 ```
 
 
-Here is a summarised journey for a user who is unsure about their GPU utilisation and wants to monitor GPU usage on a smaller job
+Here is a summarised journey for a user who is unsure about their GPU utilisation and wants to monitor GPU usage on a smaller job:
 ```
 ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
 
@@ -174,7 +174,7 @@ srun --nodelist=gpu6 nvidia-smi
 ```
 
 
-Here is a summarised journey for a user, foo, who is blocked by some users, bar and baz, and wants to know their jobs' time limits and GPU utilisations on gpu5. This has slightly more advanced commands that you do not need to know but useful if you want to check someone else's utilisation
+Here is a summarised journey for a user, foo, whose job is in a queue behind some users, bar and baz, and wants to know their jobs' time limits and GPU utilisations on gpu5. This has slightly more advanced commands that you do not need to know but which are useful if you want to check someone else's utilisation:
 ```
 ssh foo@wpia-lxhn.hpc.dide.ic.ac.uk
 squeue

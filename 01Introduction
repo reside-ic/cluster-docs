@@ -1,7 +1,7 @@
 1. [NAME] Docs: Introduction
 ---
 
-This is the documentation for [NAME], the GPU compute cluster for the infectious disease department. The docs will just be pure text files that are fed into `less` viewer (`man less` for more details). The style is similar to markdown files with the following notation:
+This is the documentation for [NAME], the GPU compute cluster for the infectious disease epidemiology department. The docs will just be pure text files that are fed into `less` viewer (`man less` for more details). The style is similar to markdown files with the following notation:
 
 * ` - backticks denote commands you can type, 3 backticks denote a code block
   Examples:
@@ -17,6 +17,7 @@ This is the documentation for [NAME], the GPU compute cluster for the infectious
   echo hello
   > hello
   ```
+  Note that many outputs of commands are ommited. Only those whose outputs are relevant to the point are shown in these docs.
 
 * (!) - this symbol is important information
   Examples:

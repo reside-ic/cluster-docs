@@ -1,7 +1,7 @@
 5. Slurm
 ---
 
-Slurm is the program that manages queues of jobs and scheduling your jobs on to different machines. The scheduling also takes into account any resources you have asked for. This page will only give a very brief summary of some Slurm commands. I would urge you to read the official Slurm docs (there are Slurm docs on all the slurm commands), especially these 3 pages:
+Slurm is the program that manages queues of jobs and scheduling your jobs onto different machines. The scheduling also takes into account any resources you have asked for. This page will only give a very brief summary of some Slurm commands. It's strongly recommended that you read the official Slurm docs (there are Slurm docs on all the slurm commands), especially these 3 pages:
 
 * https://slurm.schedmd.com/quickstart.html
 * https://slurm.schedmd.com/srun.html
@@ -33,7 +33,7 @@ Slurm commands:
   echo $CUDA_VISIBLE_DEVICES
   sleep 10    # run whatever command here
   ```
-  This script will print cuda visible devices (which GPUs you have been allocated) and wait for 10 seconds. Notice the "#SBATCH" lines at the top of the script. This is a way of defining flags you would give to `sbatch` in the script. This script will be submitted to gpu6 node and requests 2 gpus of any type. To specify the type of GPU. use format `--gres=gpu:<gpu-name>:<amount>` (more info on this in "GPUTypes" documentation).
+  This script will print CUDA visible devices (the GPUs you have been allocated) and wait for 10 seconds. Notice the "#SBATCH" lines at the top of the script. This is a way of defining flags you would give to `sbatch` in the script. This script will be submitted to node gpu6 and requests 2 GPUs of any type. To specify the type of GPU. use format `--gres=gpu:<gpu-name>:<amount>` (more info on this in "GPUTypes" documentation).
 
   Example usage (assuming gpu6 has 4 GPU cards all free):
   ```
@@ -48,6 +48,7 @@ Slurm commands:
   cat slurm-2.out
   > 2,3
   ```
+  "0,1" and "2,3" are the indices identifying the GPU cards available to jobs 1 and 2 respectively. See "https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/environment-variables.html".
 
 * `scontrol show jobs <job-id>` - view information about a submitted job
 

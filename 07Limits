@@ -3,6 +3,6 @@
 
 Every user has these limits imposed on them in the cluster:
 
-* The total size of your home directory is limited to 2TB by default. To check size of your home directory run `du -hs ~/`. If your program tries to save a file that would bring total size of your home directory over the limit, the file system will error and not let you write that file. For most people, 2TB is plenty but if not reach out to us with a reason and we can increase your limit.
+* The total size of your home directory is limited to 2TB by default. To check the size of your home directory run `du -hs ~/`. If your program tries to save a file that would bring the total size of your home directory over the limit, the file system will error and not let you write that file. For most people, 2TB is plenty, but if not reach out to us with a reason and we can increase your limit.
 
-* A job cannot be longer than 7 days long. Checkpointing is strongly recommended as a lot of workflows may need longer than 7 days or jobs can be cancelled without warning if they do not follow the cluster etiquette (more info in "Etiquette" docs). We can extend the time limit manually past 7 days but for fairness we will only do this in emergencies.
+* A job cannot be longer than 7 days. Checkpointing is strongly recommended as a lot of workflows may need longer than 7 days and jobs can be cancelled without warning if they do not follow the cluster etiquette (more info in "Etiquette" docs). We can extend the time limit manually past 7 days but for fairness we will only do this in emergencies.

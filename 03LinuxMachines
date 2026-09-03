@@ -54,7 +54,7 @@ Knowledge of and potentially some understanding of these linux commands/concepts
   ```
   Note: `cd` doesn't have a manual page, to view more information try `help cd`
 
-* SSH - you can think of SSH as logging into a machine and gaining access to a terminal. Any command you type after SSHing into a machine is you running that command on said machine, *not* your own machine. You will be SSHing into the head node so you'll need to know about the command `ssh <dide-username>@wpia-lxhn.hpc.dide.ic.ac.uk` and (optional) how you can make it easier for yourself with an SSH config file
+* SSH - you can think of SSH as logging into a machine and gaining access to a terminal. Any command you type after SSHing into a machine is you running that command on said machine, *not* your own machine. You will be SSHing into the head node so you'll need to know about the command `ssh <dide-username>@wpia-lxhn.hpc.dide.ic.ac.uk` and (optional) how you can make it easier for yourself with an SSH config file. ("wpia-lxhn.hpc.dide.ic.ac.uk" is the address of the head node)
 
 * Some understanding of environment variables in bash - all env vars are captured by Slurm so any env vars you set in your terminal will propagate when your job is run, e.g. $PATH, $PWD and $HOME
 
@@ -65,7 +65,7 @@ Understanding of these machine concepts are required to use the cluster:
 
 * Difference between memory/RAM and storage space - memory/RAM is temporary space a program needs to run, it depends on how much temporary data is required by the program. Storage space is how much permanent space you need to save files to your home directory. When requesting memory from Slurm, make sure to not confuse it with the total size of the files you'll be saving from your job.
 
-* Monitoring GPU usage via `nvidia-smi` - knowledge of `nvidia-smi` command is required as this is a GPU cluster, here is a cheatsheet: "https://gist.github.com/omerfsen/8ecb620675525ac724a92bdf5a31a4b3". It is good etiquette to make sure you are using the resources you have requested rather than wasting them. Before you run a GPU job, please try a smaller job and run `nvidia-smi` on the node that has picked the job up. So, if gpu2 picks up your job, you can run `srun --nodelist=gpu2 nvidia-smi` and make sure you have a high enough GPU utilisation (more information about what is high enough in "GPUTypes" doc).
+* Monitoring GPU usage via `nvidia-smi` - knowledge of `nvidia-smi` command is required as this is a GPU cluster, here is a cheatsheet: "https://gist.github.com/omerfsen/8ecb620675525ac724a92bdf5a31a4b3". It is good etiquette to make efficient use of resources, both by not requesting more resources than you need and by checking your job is making use of the requested resources in practice. Before you run a GPU job, please try a smaller job and run `nvidia-smi` on the node that has picked the job up. So, if gpu2 picks up your job, you can run `srun --nodelist=gpu2 nvidia-smi` and make sure you have a high enough GPU utilisation (more information about what is high enough in "GPUTypes" doc).
 
 (!) it can be hard to know which GPUs on the machine your task has been allocated. In your sbatch script you can add "echo $CUDA_VISIBLE_DEVICES" which prints out the indices of GPUs that have been allocated to your job. Do *not* modify this env var.
 
