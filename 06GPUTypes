@@ -44,7 +44,7 @@ TFLOPS/s or "tera (trillion) floating point operations per second" is a measure 
   * NVIDIA L40S            733           / Not supported
   * NVIDIA RTX Pro 5000    516           / 1032
 
-Lower precision lead to high compute speed. Lower precision also means that the numbers take up less memory so it can also lower memory requirements. If the numerical inaccuracy is acceptable, lower precision is better in terms of memory and compute.
+Lower precision leads to a higher compute speed. Lower precision also means that the representation of numbers takes up less memory so it can also lower memory requirements. If the numerical inaccuracy is acceptable, lower precision is better in terms of memory and compute.
 
 
 VRAM is RAM that is built into your GPU and stores anything your GPU is working on. Memory bandwidth is how fast the data can move between VRAM and its processors. Memory comparisons:
