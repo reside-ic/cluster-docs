@@ -63,7 +63,7 @@ VRAM is RAM that is built into your GPU and stores anything your GPU is working 
 When you run your GPU jobs, you should consider all these metrics. Some questions you may want to consider:
 
 * How much VRAM does my job need?
-* Does my job mainly do computation where TFLOPS/s is more important or does it mainly query large amounts of data where VRAM and memory bandwidth are more important?
+* Does my job mainly do computation where TFLOPS/s is more important (compute bound) or does it mainly query large amounts of data where VRAM and memory bandwidth are more important (memory bound)?
 * Can I use a lower precision to speed up my jobs or do I need the numerical accuracy?
 
 
