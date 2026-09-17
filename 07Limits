@@ -6,3 +6,31 @@ Every user has these limits imposed on them in the cluster:
 * The total size of your home directory is limited to 2TB by default. To check the size of your home directory run `du -hs ~/`. If your program tries to save a file that would bring the total size of your home directory over the limit, the file system will error and not let you write that file. For most people, 2TB is plenty, but if not reach out to us with a reason and we can increase your limit.
 
 * A job cannot be longer than 7 days. Checkpointing (saving your state and resuming from it in another job) is strongly recommended as a lot of workflows may need longer than 7 days and jobs can be cancelled without warning if they do not follow the cluster etiquette (more info in "Etiquette" docs). We can extend the time limit manually past 7 days but for fairness we will only do this in emergencies.
+
+
+If you do not specify the relevant flag in `sbatch` or `salloc`, these are the default values for resources for a job:
+
+* 0 GPUs
+* 4 CPUs per GPU (1 CPU if no GPUs requested)
+* 2GB memory per CPU
+* 30 minute job time limit
+
+It is recommended that you at least specify the number of GPUs and time limit for most jobs.
+
+
+Examples:
+
+* If you do not specify any flags, you will get:
+  * 1 CPU
+  * 2GB memory
+  * 30 minute job time limit
+
+* If you specify `--gres=gpu:2`
+  * 8 CPUs
+  * 16GB memory
+  * 30 minute job time limit
+
+* If you specify `--gres=gpu:2 --mem=8G --time=1-00:00:00`
+  * 8 CPUs
+  * 8GB memory
+  * 1 day job time limit
