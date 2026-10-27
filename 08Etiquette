@@ -7,9 +7,9 @@ These are rules that cannot be enforced at a programmatic level. As such, your j
 
 Rules:
 
-* Resource utilisation, especially GPU utilisation - there is an expectation that you know what your code is doing and have tried smaller jobs while monitoring GPU utilisation before launching a big job on the cluster. If a job has requested resources that it is not using most of the time and this is preventing users from launching jobs, it may be cancelled
+* Resource utilisation, especially GPU utilisation - there is an expectation that you know what your code is doing and have tried smaller jobs while monitoring GPU/CPU utilisation before launching a big job on the cluster. If a job has requested resources that it is not using most of the time and this is preventing users from launching jobs, it may be cancelled
 
-* CPU jobs - some CPU only jobs are acceptable, e.g. installing/building dependencies, benchmarking against GPU runs, monitoring GPU/memory usage or other small jobs. Any large CPU jobs that do actual analysis for a long period of time/request a large number of CPUs are not allowed
+* CPU jobs - some CPU only jobs are acceptable in the gpu partition, e.g. installing/building dependencies, benchmarking against GPU runs, monitoring GPU/memory usage or other small jobs related to GPUs. Any large CPU jobs that do actual analysis for a long period of time/request a large number of CPUs should be run in the cpu partition using the `--partition=cpu` flag with `srun` or `sbatch`
 
 * Saturating the cluster - most of the time, you should not saturate the cluster and submit many jobs to all the nodes at once as this will prevent someone else from getting a node for a long amount of time. Instead, you should target a subset of the nodes. If the cluster is relatively empty, you can send a message on the "GPU Slurm" Teams channel that you are intending to use all the nodes and that anyone can contact you to cancel any of your jobs. Your job may still be cancelled if you do not respond to people asking you to cancel your job
 

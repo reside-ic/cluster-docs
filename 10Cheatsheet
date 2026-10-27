@@ -5,11 +5,12 @@
 * `kinit` - get new ticket
 * `auks -g` - get ticket in cache
 * `auks -a` - push current ticket into cache
-* `sinfo` - see status of nodes
+* `sinfo` - see status of nodes and partitions
 * `sinfo -o "%10N  %4c  %10m  %35G"` - see CPUs, memory and GPUs for each node
 * `squeue` - see queue of jobs including running ones
 * `srun command arg1 arg2 ...` - run command in the foreground
 * `sbatch <script>` - run a script in the background
+* `--partition=<partition>` - to request job runs on a particular partition. Valid values are "cpu" or "gpu"
 * `--nodelist=gpuN` - to request job runs on a particular machine
 * `--gres=gpu:<gpu-name>:<amount>` - to request a particular type of gpu, specify it in your gres flag. Current available gpu types are nvidia_rtx_a5000, nvidia_a100-pcie-40gb, nvidia_l40s and nvidia_rtx_pro_5000_blackwell (this is also the default ordering if gpu type is unspecified)
 * `scontrol show jobs <job-id>` - see info about submitted job
