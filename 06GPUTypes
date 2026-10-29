@@ -1,6 +1,8 @@
 6. GPUTypes
 ---
 
+(!) If you are planning to be a CPU only user of this cluster, you can skip this section.
+
 The DIDE cluster has several GPU types which may be better suited to different workloads, in the table below we summarise the key performance numbers for most machine learning workloads. It is important to realise that these numbers correspond to *peak* achievable performance, in practice many applications will achieve performance substantially below this. Also note that certain accelerated kernels may only be available on newer NVIDIA generations (e.g. Flash Attention 4) and that TF32 cores are default for FP32 workloads. We have the following GPU cards:
 
 * NVIDIA A100 (PCIe):
