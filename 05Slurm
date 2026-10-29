@@ -22,7 +22,10 @@ Slurm commands:
   srun --nodelist=gpu3 hostname    # only gpu3 can pick up the task
   srun --gpus=2 hostname    # allocates 2 GPUs to your job
   srun --nodelist=cpu1 --partition=cpu hostname    # partition flag is needed as cpu1 is in cpu partition, but the default partition is gpu
+  srun --partition=cpu --cpus-per-task=16 hostname    # requests 16 cpus from any machine in cpu partition
+  srun --gpus=4 --mem=30G hostname    # requests 4 GPUs and 30GB of memory
   ```
+  (!) most flags that work with `srun` also work with `sbatch`
 
 * `sbatch <path-to-script>` - submit a job script, which will run in the background so you can exit your terminal and check back on it later. By default this will stream output to slurm-<job-id>.out
   Example script (called "test.sh"):
